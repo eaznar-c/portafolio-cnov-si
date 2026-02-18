@@ -31,110 +31,102 @@
                     <div class="subheading mb-5">
                         179880 Aznar Cuevas Luis Eduardo · Seguridad Informatica CNOV ·
                     </div>
-                    <h3>Interpretación y Traducción de Políticas de Filtrado en iptables</h3>
-
-                    <h2>IPTABLES</h2>
-
-                    <h3>1. Flujo del paquete</h3>
+                    <h3>Introducción</h3>
                     <p>
-                    Cuando un paquete llega al sistema, primero pasa por una <strong>tabla</strong>, 
-                    después por una <strong>cadena</strong> y finalmente se ejecuta una <strong>acción</strong>.
+                    A través de esta práctica se configuraron dispositivos Cisco para establecer un túnel seguro 
+                    sitio a sitio, aplicando conceptos fundamentales de ciberseguridad como criptografía simétrica, 
+                    autenticación mediante claves pre-compartidas, políticas ISAKMP/IKE y listas de acceso para la 
+                    definición del tráfico interesante.
                     </p>
 
-                    <h3>2. Tablas y propósito</h3>
-
-                    <table>
-                    <tr>
-                        <th>Tabla</th>
-                        <th>Propósito principal</th>
-                        <th>Ejemplo de uso</th>
-                    </tr>
-                    <tr>
-                        <td>FILTER</td>
-                        <td>Filtrar paquetes</td>
-                        <td>Bloquear tráfico excepto SSH</td>
-                    </tr>
-                    <tr>
-                        <td>NAT</td>
-                        <td>Traducir direcciones</td>
-                        <td>Compartir una IP pública</td>
-                    </tr>
-                    <tr>
-                        <td>MANGLE</td>
-                        <td>Modificar paquetes</td>
-                        <td>Marcar paquete como alta prioridad</td>
-                    </tr>
-                    <tr>
-                        <td>RAW</td>
-                        <td>Excepción al seguimiento de conexión</td>
-                        <td>Determinar a qué servicio se dirige un paquete</td>
-                    </tr>
-                    <tr>
-                        <td>SECURITY</td>
-                        <td>Aplicar políticas de seguridad adicionales</td>
-                        <td>Restricción por permisos especiales</td>
-                    </tr>
-                    </table>
-
-                    <h3>3. Anatomía de un comando iptables</h3>
-
-                    <code>
-                    iptables -A INPUT -p tcp -m multiport --dports 80,443 -j ACCEPT
-                    </code>
-
-                    <h3>4. ¿Qué permite este comando?</h3>
                     <p>
-                    Crea una regla que acepta tráfico TCP entrante en los puertos 80 (HTTP) y 443 (HTTPS).
+                    Esta actividad permitió comprender el funcionamiento práctico de los servicios de seguridad 
+                    en redes, reforzando los conocimientos teóricos sobre protección de datos en tránsito y gestión 
+                    de comunicaciones seguras en infraestructuras empresariales.
                     </p>
 
-                    <h3>5. Variables y opciones comunes</h3>
+                    <hr>
 
-                    <p><strong>a- Limitar intentos por minuto</strong></p>
-                    <code>--limit 5/minute</code>
+                    <h3>Procedimiento</h3>
 
-                    <p><strong>b- Filtrar por IP de origen</strong></p>
-                    <code>-s 192.168.25.0/24</code>
+                    <ol>
+                        <li>Configuración inicial de equipo.</li>
+                        <li>Activar paquete de seguridad (licencia habilitada).</li>
+                        <li>Implementación de ACLs.</li>
+                        <li>Phase 01: ISAKMP Policy.</li>
+                        <li>Phase 02: IPsec Transform Set.</li>
+                        <li>Crear el mapa criptográfico.</li>
+                        <li>Aplicar el mapa criptográfico.</li>
+                    </ol>
 
-                    <p><strong>c- Ver reglas sin resolución DNS</strong></p>
-                    <code>iptables -L -n</code>
+                    <hr>
 
-                    <p><strong>d- Ver reglas con contadores</strong></p>
-                    <code>iptables -L -v</code>
-
-                    <h3>6. Interpretación de regla</h3>
+                    <h3>Configuración de Routers</h3>
+                    <p>
+                    Se configuraron las redes de los routers (Router 1 y Router 3) con sus respectivas direcciones IP 
+                    utilizando comandos como:
+                    </p>
 
                     <code>
-                    iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 
-                    -m state --state NEW,ESTABLISHED -j ACCEPT
+                    configure terminal
+                    ip address X.X.X.X X.X.X.X
                     </code>
 
                     <p>
-                    Permite tráfico TCP entrante por la interfaz <strong>eth0</strong> en los puertos 
-                    22 (SSH), 80 (HTTP) y 443 (HTTPS), siempre que el estado de la conexión sea 
-                    <strong>NEW</strong> o <strong>ESTABLISHED</strong>.
+                    Cada router fue configurado con su respectiva IP para establecer la conectividad necesaria 
+                    antes de implementar el túnel IPsec.
                     </p>
 
-                    <h3>7. Permitir tráfico HTTP entrante</h3>
-                    <code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT</code>
+                    <hr>
 
-                    <h3>8. Permitir todo el tráfico saliente</h3>
-                    <code>iptables -A OUTPUT -j ACCEPT</code>
+                    <h3>Políticas de Seguridad ISAKMP</h3>
 
-                    <h3>9. Permitir SSH solo desde 192.168.1.50</h3>
-                    <code>iptables -A INPUT -p tcp -s 192.168.1.50 --dport 22 -j ACCEPT</code>
+                    <p>
+                    ISAKMP (Internet Security Association and Key Management Protocol) es el protocolo encargado 
+                    de autenticar los dispositivos y establecer un canal seguro. Esto corresponde a la <strong>Fase 1 de IKE</strong>, 
+                    donde se crea el canal seguro antes de establecer el túnel IPsec.
+                    </p>
 
-                    <h3>10. Permitir TCP entrante en 80 y 443 si es ESTABLISHED o RELATED</h3>
+                    <p>
+                    Para poder utilizar las políticas ISAKMP en Packet Tracer, fue necesario habilitar la licencia 
+                    de seguridad del router (C1900), reiniciando el equipo para cargar los comandos necesarios.
+                    </p>
+
+                    <p>
+                    Se utilizó la <strong>Política 10</strong> para definir los parámetros de seguridad:
+                    </p>
+
                     <code>
-                    iptables -A INPUT -p tcp -m multiport --dports 80,443 
-                    -m state --state ESTABLISHED,RELATED -j ACCEPT
+                    crypto isakmp policy 10
+                    encryption aes 256
+                    authentication pre-share
                     </code>
 
-                    <h3>11. Permitir TCP por eth0, registrar intentos y permitir NEW y ESTABLISHED</h3>
+                    <p>
+                    Estos parámetros definen el cifrado y el método de autenticación que se utilizarán para 
+                    establecer el canal seguro entre los routers.
+                    </p>
 
-                    <code>
-                    iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 
-                    -m state --state NEW,ESTABLISHED -j LOG --log-prefix "Try"
-                    </code>
+                    <p>
+                    La configuración se realizó en ambos routers (Router 1 y Router 3) para poder establecer 
+                    correctamente el túnel VPN entre ambas redes.
+                    </p>
+
+                    <hr>
+
+                    <h3>Conclusión</h3>
+                    <p>
+                    La implementación de una VPN IPsec en Cisco Packet Tracer permitió comprender de manera 
+                    práctica cómo se establecen comunicaciones seguras entre redes remotas a través de una 
+                    infraestructura pública.
+                    </p>
+
+                    <p>
+                    Mediante la configuración de políticas ISAKMP/IKE, claves pre-compartidas, transform sets y 
+                    listas de acceso para definir el tráfico interesante, se aplicaron conceptos fundamentales de 
+                    ciberseguridad relacionados con la confidencialidad, integridad y autenticación de la información.
+                    </p>
+
                 </div>
             </section>
             <hr class="m-0" />
