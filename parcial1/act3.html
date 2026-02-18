@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Zapateria</title>
+        <title>ACTIVIDAD 3</title>
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -25,31 +25,124 @@
             <section class="resume-section" id="about">
                 <div class="resume-section-content">
                     <h1 class="mb-0">
-                        Zapateria
-                        <span class="text-primary">Bicentenario</span>
+                        ACTIVIDAD 3
+                        <span class="text-primary">Interpretación y Traducción de Políticas de Filtrado en iptables</span>
                     </h1>
                     <div class="subheading mb-5">
-                        3542 Berry Street · Cheyenne Wells, CO 80810 · (317) 585-8468 ·
-                        <a href="mailto:name@email.com">name@email.com</a>
+                        179880 Aznar Cuevas Luis Eduardo · Seguridad Informatica CNOV ·
                     </div>
-                    <h3>¿Quienes somos?</h3>
-                    <p>Somos una Empresa 100% Mexicana que te ofrece una excelente opción a tí, y para tu estilo personal</p>
-                    <p><b>FAZ </b>con 29 años de experiencia en el ramo del Calzado, es la Empresa que Ideó, Desarrolló y es Lider en la Venta de Calzado por Catálogo.</p>
-                    <p><b>FAZ </b>cuenta con un gran prestigio respaldado por Productos de Moda, Calidad y Precio Accesible, que solo es posible lograr gracias a sus Investigaciones a nivel Internacional y su Alta Tecnología de Fabricación, que utiliza materiales de alta calidad, para ofrecer mayor durabilidad y comfort.</p><br>
-                    <h3>Nuestra Misión</h3>
-                    <p>Es ofrecer calzado a todo el público una opción moderna y cómoda para su calzado de acuerdo a las normas de calidad actuales de nuestro país.</p><br>
-                    <h3>Nuestros Objetivos</h3>
-                    <ul>
-                        <li>Ofrecer una amplia gama de modelos y estilos utilizando materiales de alta calidad.</li>
-                        <li>Poner al alcance de todo el público todos nuestros productos en cualquier parte del país.</li>
-                        <li>Retroalimentarnos con todos nuestros clientes y distribuidores para generar nuevos e innovadores estilos.</li>
-                    </ul>
-                    <div class="social-icons">
-                        <a class="social-icon" href="#!"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="social-icon" href="#!"><i class="fab fa-github"></i></a>
-                        <a class="social-icon" href="#!"><i class="fab fa-twitter"></i></a>
-                        <a class="social-icon" href="#!"><i class="fab fa-facebook-f"></i></a>
-                    </div>
+                    <h3>Interpretación y Traducción de Políticas de Filtrado en iptables</h3>
+
+                    <h2>IPTABLES</h2>
+
+                    <h3>1. Flujo del paquete</h3>
+                    <p>
+                    Cuando un paquete llega al sistema, primero pasa por una <strong>tabla</strong>, 
+                    después por una <strong>cadena</strong> y finalmente se ejecuta una <strong>acción</strong>.
+                    </p>
+
+                    <h3>2. Tablas y propósito</h3>
+
+                    <table>
+                    <tr>
+                        <th>Tabla</th>
+                        <th>Propósito principal</th>
+                        <th>Ejemplo de uso</th>
+                    </tr>
+                    <tr>
+                        <td>FILTER</td>
+                        <td>Filtrar paquetes</td>
+                        <td>Bloquear tráfico excepto SSH</td>
+                    </tr>
+                    <tr>
+                        <td>NAT</td>
+                        <td>Traducir direcciones</td>
+                        <td>Compartir una IP pública</td>
+                    </tr>
+                    <tr>
+                        <td>MANGLE</td>
+                        <td>Modificar paquetes</td>
+                        <td>Marcar paquete como alta prioridad</td>
+                    </tr>
+                    <tr>
+                        <td>RAW</td>
+                        <td>Excepción al seguimiento de conexión</td>
+                        <td>Determinar a qué servicio se dirige un paquete</td>
+                    </tr>
+                    <tr>
+                        <td>SECURITY</td>
+                        <td>Aplicar políticas de seguridad adicionales</td>
+                        <td>Restricción por permisos especiales</td>
+                    </tr>
+                    </table>
+
+                    <h3>3. Anatomía de un comando iptables</h3>
+
+                    <code>
+                    iptables -A INPUT -p tcp -m multiport --dports 80,443 -j ACCEPT
+                    </code>
+
+                    <h3>4. ¿Qué permite este comando?</h3>
+                    <p>
+                    Crea una regla que acepta tráfico TCP entrante en los puertos 80 (HTTP) y 443 (HTTPS).
+                    </p>
+
+                    <h3>5. Variables y opciones comunes</h3>
+
+                    <p><strong>a- Limitar intentos por minuto</strong></p>
+                    <code>--limit 5/minute</code>
+
+                    <p><strong>b- Filtrar por IP de origen</strong></p>
+                    <code>-s 192.168.25.0/24</code>
+
+                    <p><strong>c- Ver reglas sin resolución DNS</strong></p>
+                    <code>iptables -L -n</code>
+
+                    <p><strong>d- Ver reglas con contadores</strong></p>
+                    <code>iptables -L -v</code>
+
+                    <h3>6. Interpretación de regla</h3>
+
+                    <code>
+                    iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 
+                    -m state --state NEW,ESTABLISHED -j ACCEPT
+                    </code>
+
+                    <p>
+                    Permite tráfico TCP entrante por la interfaz <strong>eth0</strong> en los puertos 
+                    22 (SSH), 80 (HTTP) y 443 (HTTPS), siempre que el estado de la conexión sea 
+                    <strong>NEW</strong> o <strong>ESTABLISHED</strong>.
+                    </p>
+
+                    <h3>7. Permitir tráfico HTTP entrante</h3>
+                    <code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT</code>
+
+                    <h3>8. Permitir todo el tráfico saliente</h3>
+                    <code>iptables -A OUTPUT -j ACCEPT</code>
+
+                    <h3>9. Permitir SSH solo desde 192.168.1.50</h3>
+                    <code>iptables -A INPUT -p tcp -s 192.168.1.50 --dport 22 -j ACCEPT</code>
+
+                    <h3>10. Permitir TCP entrante en 80 y 443 si es ESTABLISHED o RELATED</h3>
+                    <code>
+                    iptables -A INPUT -p tcp -m multiport --dports 80,443 
+                    -m state --state ESTABLISHED,RELATED -j ACCEPT
+                    </code>
+
+                    <h3>11. Permitir TCP por eth0, registrar intentos y permitir NEW y ESTABLISHED</h3>
+
+                    <code>
+                    iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 
+                    -m state --state NEW,ESTABLISHED -j LOG --log-prefix "Try"
+                    </code>
+                </div>
+            </section>
+            <hr class="m-0" />
+
+            <section class="resume-section" id="pdf">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">PDF</h2>
+                    <object class="pdf" data="pdfs/179880-act03.pdf" width="800" height="500"></object>
                 </div>
             </section>
             <hr class="m-0" />
