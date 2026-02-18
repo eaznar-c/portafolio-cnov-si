@@ -402,6 +402,25 @@
                     <h2 class="mb-5">PDF</h2>
                     <object class="pdf" data="pdfs/179880-act02.pdf" width="800" height="500"></object>
                 </div>
+                <div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+                    <button onclick="descargarPDF()">Descargar PDF</button>
+                    <script>
+                    function descargarPDF() {
+                        const elemento = document.body; // Descarga toda la página
+                        
+                        const opciones = {
+                            margin:       0.5,
+                            filename:     'escenario01.pdf',
+                            image:        { type: 'jpeg', quality: 0.98 },
+                            html2canvas:  { scale: 2 },
+                            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                        };
+
+                        html2pdf().set(opciones).from(elemento).save();
+                    }
+                    </script>
+                </div>
             </section>
             <hr class="m-0" />
         </div>
