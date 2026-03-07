@@ -36,43 +36,238 @@
                     <p><b>El enfoque</b> es para continuar con el aprendizaje sobre la Seguridad Informatica y convertirse en aprendices sobre la ciberseguridad.</p>
                     <p><b>La importancia</b> de este portafolio es el estudio de los trabajos hechos despues de haber sido realizados en un futuro, mas aparte las lecciones aprendidas por nuestros errores en las actividades para mejorar como estudiantes.</p><br>
                     <h3>Perfil</h3>
-                    <table>
-                    <tr>
-                    <th>Elemento</th>
-                    <th>Descripción</th>
-                    </tr>
+                    <table border="1" cellpadding="10" cellspacing="0">
 
-                    <tr>
-                    <td>Tipo de ataque</td>
-                    <td>Wiper disfrazado de ransomware.</td>
-                    </tr>
+                        <tr>
+                        <th>Plataforma</th>
+                        <th>Métricas utilizadas</th>
+                        <th>Enfoque de entrenamiento</th>
+                        <th>Técnicas reales simuladas</th>
+                        <th>Ventajas</th>
+                        <th>Limitaciones</th>
+                        </tr>
 
-                    <tr>
-                    <td>Actor atacante</td>
-                    <td>Atribuido al grupo Sandworm (GRU).</td>
-                    </tr>
+                        <tr>
+                        <td><b>Hoxhunt</b></td>
+                        <td>
+                        Click Rate (usuarios que interactúan con el phishing), 
+                        Reporting Rate (usuarios que reportan el correo sospechoso) y 
+                        Human Risk Score que mide el nivel de riesgo de cada empleado
+                        según su comportamiento en las simulaciones.
+                        </td>
+                        <td>
+                        Entrenamiento adaptativo basado en inteligencia artificial.
+                        El sistema ajusta automáticamente la dificultad de los ataques
+                        según el comportamiento de cada usuario.
+                        </td>
+                        <td>
+                        Phishing corporativo, spear-phishing personalizado,
+                        correos que simulan servicios en la nube,
+                        notificaciones falsas de seguridad y solicitudes internas.
+                        </td>
+                        <td>
+                        Alta personalización de ataques simulados,
+                        gamificación que incentiva el aprendizaje,
+                        retroalimentación inmediata al usuario.
+                        </td>
+                        <td>
+                        Costo elevado para organizaciones pequeñas
+                        y dependencia fuerte de integraciones con correo corporativo.
+                        </td>
+                        </tr>
 
-                    <tr>
-                    <td>Vector de entrada</td>
-                    <td>Actualización maliciosa del software MeDoc.</td>
-                    </tr>
+                        <tr>
+                        <td><b>Proofpoint</b></td>
+                        <td>
+                        Threat Response Rate, Click Rate,
+                        y métricas de susceptibilidad al phishing basadas
+                        en datos globales de amenazas detectadas por la empresa.
+                        </td>
+                        <td>
+                        Capacitación basada en inteligencia de amenazas
+                        reales detectadas en su red de análisis de correos electrónicos.
+                        </td>
+                        <td>
+                        Ataques de phishing masivo, campañas de malware,
+                        ingeniería social empresarial (BEC) y ataques
+                        basados en enlaces maliciosos.
+                        </td>
+                        <td>
+                        Gran base de datos de amenazas reales,
+                        integración directa con soluciones de seguridad de correo.
+                        </td>
+                        <td>
+                        Plataforma compleja de implementar
+                        y enfocada principalmente en empresas grandes.
+                        </td>
+                        </tr>
 
-                    <tr>
-                    <td>Vulnerabilidad explotada</td>
-                    <td>EternalBlue y EternalRomance.</td>
-                    </tr>
+                        <tr>
+                        <td><b>KnowBe4</b></td>
+                        <td>
+                        Phish-Prone Percentage (PPP),
+                        Click Rate, Reporting Rate
+                        y métricas de progreso del usuario
+                        durante el programa de entrenamiento.
+                        </td>
+                        <td>
+                        Programas estructurados de capacitación
+                        que combinan simulaciones de phishing
+                        con cursos, videos y evaluaciones.
+                        </td>
+                        <td>
+                        Phishing tradicional, spear phishing,
+                        ataques de ingeniería social y
+                        simulaciones de credenciales falsas.
+                        </td>
+                        <td>
+                        Amplia biblioteca de contenido educativo,
+                        fácil implementación,
+                        gran cantidad de plantillas de phishing.
+                        </td>
+                        <td>
+                        Las simulaciones pueden ser predecibles
+                        si no se personalizan correctamente.
+                        </td>
+                        </tr>
 
-                    <tr>
-                    <td>Sistemas comprometidos</td>
-                    <td>
-                    Servidores, SAP ERP, correo electrónico, sistemas logísticos, Active Directory.
-                    </td>
-                    </tr>
+                        <tr>
+                        <td><b>Cofense</b></td>
+                        <td>
+                        Click Rate, Reporting Rate
+                        y métricas de tiempo de respuesta
+                        en el reporte de correos sospechosos.
+                        </td>
+                        <td>
+                        Entrenamiento centrado en el usuario
+                        como sensor humano de amenazas,
+                        fomentando el reporte de phishing.
+                        </td>
+                        <td>
+                        Ataques BEC (Business Email Compromise),
+                        phishing corporativo
+                        y simulaciones basadas en ataques reales
+                        reportados por la comunidad.
+                        </td>
+                        <td>
+                        Gran enfoque en respuesta a incidentes
+                        y colaboración entre usuarios y analistas.
+                        </td>
+                        <td>
+                        Menor variedad de contenido educativo
+                        comparado con otras plataformas.
+                        </td>
+                        </tr>
 
-                    <tr>
-                    <td>Duración del incidente</td>
-                    <td>10 a 14 días.</td>
-                    </tr>
+                        <tr>
+                        <td><b>Phished.io</b></td>
+                        <td>
+                        Employee Risk Score,
+                        Click Rate
+                        y métricas de comportamiento
+                        basadas en inteligencia artificial.
+                        </td>
+                        <td>
+                        Entrenamiento completamente automatizado
+                        con algoritmos que adaptan las campañas
+                        según el comportamiento del usuario.
+                        </td>
+                        <td>
+                        Phishing basado en credenciales,
+                        phishing de servicios en la nube
+                        y ataques de ingeniería social automatizados.
+                        </td>
+                        <td>
+                        Automatización total del programa de phishing
+                        y análisis detallado del comportamiento del usuario.
+                        </td>
+                        <td>
+                        Menor reconocimiento en el mercado
+                        y menor ecosistema de integraciones.
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td><b>NINJIO</b></td>
+                        <td>
+                        Métricas de finalización de cursos,
+                        evaluación del conocimiento
+                        y reducción de vulnerabilidad al phishing.
+                        </td>
+                        <td>
+                        Aprendizaje basado en storytelling
+                        mediante episodios animados
+                        inspirados en ataques reales.
+                        </td>
+                        <td>
+                        Simulaciones básicas de phishing,
+                        fraudes corporativos
+                        y escenarios de ingeniería social.
+                        </td>
+                        <td>
+                        Contenido educativo atractivo
+                        y alto nivel de engagement de usuarios.
+                        </td>
+                        <td>
+                        Menor enfoque en simulaciones técnicas
+                        comparado con otras plataformas.
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td><b>Mimecast</b></td>
+                        <td>
+                        Click Rate, Report Rate
+                        y métricas de exposición a amenazas
+                        dentro del ecosistema de correo electrónico.
+                        </td>
+                        <td>
+                        Entrenamiento integrado con sistemas
+                        de seguridad de correo corporativo.
+                        </td>
+                        <td>
+                        Phishing basado en enlaces,
+                        adjuntos maliciosos
+                        y ataques de ingeniería social por correo.
+                        </td>
+                        <td>
+                        Integración directa con soluciones
+                        de protección de correo electrónico.
+                        </td>
+                        <td>
+                        Menos contenido educativo
+                        comparado con plataformas especializadas
+                        en concienciación.
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td><b>Infosec Institute (Infosec IQ)</b></td>
+                        <td>
+                        Security Awareness Score,
+                        Click Rate
+                        y métricas de cumplimiento organizacional.
+                        </td>
+                        <td>
+                        Programas educativos completos
+                        orientados a concienciación en seguridad
+                        y cumplimiento normativo.
+                        </td>
+                        <td>
+                        Phishing tradicional,
+                        ataques de ingeniería social
+                        y simulaciones de credenciales comprometidas.
+                        </td>
+                        <td>
+                        Amplia biblioteca de cursos de ciberseguridad
+                        y herramientas para cumplimiento.
+                        </td>
+                        <td>
+                        Simulaciones de phishing
+                        menos avanzadas que otras plataformas especializadas.
+                        </td>
+                        </tr>
+
                     </table>
                 </div>
             </section>
