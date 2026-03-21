@@ -334,10 +334,10 @@ document.querySelectorAll("input").forEach(input => {
         if (valor === respuestas[nombre].correcta) {
             puntaje++;
             feedback.className = "feedback correct";
-            feedback.innerHTML = "✅ Correcto: " + respuestas[nombre].explicacion;
+            feedback.innerHTML = "Correcto: " + respuestas[nombre].explicacion;
         } else {
             feedback.className = "feedback incorrect";
-            feedback.innerHTML = "❌ Incorrecto: " + respuestas[nombre].explicacion;
+            feedback.innerHTML = "Incorrecto: " + respuestas[nombre].explicacion;
         }
 
         feedback.style.display = "block";
@@ -365,32 +365,7 @@ function siguientePregunta() {
     }
 }
 
-function calificar() {
-    let puntaje = 0;
 
-    for (let q in respuestas) {
-        let seleccion = document.querySelector(`input[name="${q}"]:checked`);
-        let feedback = document.getElementById("f" + q.slice(1));
-
-        if (seleccion) {
-            if (seleccion.value === respuestas[q].correcta) {
-                puntaje++;
-                feedback.className = "feedback correct";
-                feedback.innerHTML = "Correcto: " + respuestas[q].explicacion;
-            } else {
-                feedback.className = "feedback incorrect";
-                feedback.innerHTML = "Incorrecto: " + respuestas[q].explicacion;
-            }
-            feedback.style.display = "block";
-        }
-    }
-
-    document.getElementById("result").innerHTML =
-        `Resultado: ${puntaje}/10<br>` +
-        (puntaje >= 8 ? "Nivel alto en ciberseguridad"
-        : puntaje >= 5 ? "Nivel medio"
-        : "Nivel bajo, cuidado con phishing");
-}
 </script>
 
 </body>
