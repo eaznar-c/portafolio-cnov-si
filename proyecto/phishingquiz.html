@@ -306,16 +306,6 @@ const respuestas = {
     }
 };
 
-function actualizarProgreso() {
-    let total = 10;
-    let contestadas = document.querySelectorAll("input:checked").length;
-    let porcentaje = (contestadas / total) * 100;
-    document.getElementById("progress").style.width = porcentaje + "%";
-}
-
-document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("change", actualizarProgreso);
-});
 
 let preguntaActual = 1;
 let totalPreguntas = 10;
@@ -365,6 +355,17 @@ function siguientePregunta() {
     }
 }
 
+function mostrarResultado() {
+    document.getElementById("quizForm").style.display = "none";
+
+    document.getElementById("result").innerHTML =
+        `Resultado: ${puntaje}/10<br>` +
+        (puntaje >= 8 ? "Nivel alto en ciberseguridad"
+        : puntaje >= 5 ? "Nivel medio"
+        : "Nivel bajo, cuidado con phishing");
+
+    document.getElementById("result").style.display = "block";
+}
 
 </script>
 
