@@ -10970,3 +10970,16 @@ section.resume-section .resume-section-content {
     padding-bottom: 5rem;
   }
 }
+
+#quiz ul {
+    margin-top: 0;
+    padding-left: 20px;
+}
+
+#quiz li {
+    margin: 0;
+}
+
+#quiz h2 {
+    margin-bottom: 10px;
+}
