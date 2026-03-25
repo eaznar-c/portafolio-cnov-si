@@ -166,6 +166,69 @@ tr:nth-child(3) {
 #quizForm {
     display: none;
 }
+
+.ranking-card {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+.ranking-card h2 {
+    color: #38bdf8;
+    margin-bottom: 20px;
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.ranking-table thead {
+    background: #0ea5e9;
+}
+
+.ranking-table th {
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+.ranking-table td {
+    padding: 10px;
+    border-bottom: 1px solid #334155;
+}
+
+/* Hover */
+.ranking-table tbody tr:hover {
+    background: #334155;
+    transition: 0.3s;
+}
+
+/* Top 3 */
+.gold {
+    background: linear-gradient(90deg, #FFD70033, transparent);
+    font-weight: bold;
+}
+
+.silver {
+    background: linear-gradient(90deg, #C0C0C033, transparent);
+}
+
+.bronze {
+    background: linear-gradient(90deg, #CD7F3233, transparent);
+}
+
+/* Número ranking */
+.ranking-table td:first-child {
+    font-weight: bold;
+    color: #facc15;
+}
 </style>
 </head>
 
@@ -399,11 +462,19 @@ const respuestas = {
 let preguntaActual = 1;
 let totalPreguntas = 10;
 let puntaje = 0;
-
+let tiempoInicio = Date.now();
+let tiempos = []; // guarda tiempo por pregunta
 
 // Detectar respuesta
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("change", function() {
+
+        let tiempoFin = Date.now();
+        let tiempoPregunta = (tiempoFin - tiempoInicio) / 1000; // en segundos
+
+        tiempos.push(tiempoPregunta);
+
+        tiempoInicio = Date.now(); // reiniciar para siguiente pregunta
 
         let nombre = this.name;
         let valor = this.value;
@@ -421,10 +492,8 @@ document.querySelectorAll("input").forEach(input => {
 
         feedback.style.display = "block";
 
-        // Actualizar barra
         let progreso = (preguntaActual / totalPreguntas) * 100;
         document.getElementById("progress").style.width = progreso + "%";
-
     });
 });
 
@@ -463,6 +532,8 @@ function mostrarResultado() {
     document.getElementById("result").style.display = "block";
 
     calcularStats(); 
+    analizarTiempos();
+    detectarProblemas();
 }
 
 function iniciarQuiz() {
@@ -484,6 +555,7 @@ function guardarResultado(nombre, puntaje) {
     resultados.push({
         nombre: nombre,
         puntaje: puntaje,
+        tiempos: tiempos, // 🔥 guardar tiempos
         fecha: new Date().toLocaleString()
     });
 
@@ -493,23 +565,41 @@ function guardarResultado(nombre, puntaje) {
 function mostrarRanking() {
     let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
 
-    // Ordenar por puntaje
     resultados.sort((a, b) => b.puntaje - a.puntaje);
 
-    let html = "<h2>🏆 Ranking</h2><table>";
+    let html = `
+        <div class="ranking-card">
+            <h2>🏆 Ranking de Jugadores</h2>
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Jugador</th>
+                        <th>Puntaje</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
 
     resultados.forEach((user, i) => {
+        let clase = "";
+
+        if (i === 0) clase = "gold";
+        else if (i === 1) clase = "silver";
+        else if (i === 2) clase = "bronze";
+
         html += `
-            <tr>
-                <td>#${i + 1}</td>
+            <tr class="${clase}">
+                <td>${i + 1}</td>
                 <td>${user.nombre}</td>
-                <td>${user.puntaje}</td>
+                <td>${user.puntaje}/10</td>
                 <td>${user.fecha}</td>
             </tr>
         `;
     });
 
-    html += "</table>";
+    html += `</tbody></table></div>`;
 
     document.getElementById("ranking").innerHTML = html;
 }
@@ -529,7 +619,61 @@ function calcularStats() {
     `;
 }
 
+function analizarTiempos() {
+    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
 
+    if (resultados.length === 0) return;
+
+    let totalPreguntas = 10;
+    let sumaTiempos = Array(totalPreguntas).fill(0);
+
+    resultados.forEach(user => {
+        user.tiempos.forEach((t, i) => {
+            sumaTiempos[i] += t;
+        });
+    });
+
+    let promedios = sumaTiempos.map(t => t / resultados.length);
+
+    let html = "<h3>📊 Análisis de dificultad</h3>";
+
+    promedios.forEach((t, i) => {
+        html += `<p>Pregunta ${i + 1}: ${t.toFixed(2)} seg</p>`;
+    });
+
+    document.getElementById("stats").innerHTML += html;
+}
+
+function detectarProblemas() {
+    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
+
+    let totalPreguntas = 10;
+    let errores = Array(totalPreguntas).fill(0);
+
+    resultados.forEach(user => {
+        // puedes expandir esto si guardas respuestas también
+    });
+
+    // Ejemplo simple basado en tiempo alto
+    let tiemposAltos = resultados.map(r => r.tiempos);
+
+    let promedioTiempo = [];
+
+    for (let i = 0; i < totalPreguntas; i++) {
+        let suma = 0;
+        resultados.forEach(r => suma += r.tiempos[i]);
+        promedioTiempo[i] = suma / resultados.length;
+    }
+
+    let maxTiempo = Math.max(...promedioTiempo);
+
+    let preguntaDificil = promedioTiempo.indexOf(maxTiempo) + 1;
+
+    document.getElementById("stats").innerHTML += `
+        <h3>⚠️ Área de mejora</h3>
+        <p>La pregunta más difícil es la #${preguntaDificil}</p>
+    `;
+}
 </script>
 
 </body>
