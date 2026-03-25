@@ -10983,3 +10983,7 @@ section.resume-section .resume-section-content {
 #quiz h2 {
     margin-bottom: 10px;
 }
+
+#quizForm {
+    display: none;
+}
