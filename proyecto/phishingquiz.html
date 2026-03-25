@@ -515,35 +515,6 @@ let puntaje = 0;
 let tiempoInicio = Date.now();
 let tiempos = []; // guarda tiempo por pregunta
 
-// Detectar respuesta
-
-
-        let tiempoFin = Date.now();
-        let tiempoPregunta = (tiempoFin - tiempoInicio) / 1000; // en segundos
-
-        tiempos.push(tiempoPregunta);
-
-        tiempoInicio = Date.now(); // reiniciar para siguiente pregunta
-
-        let nombre = this.name;
-        let valor = this.value;
-
-        let feedback = document.getElementById("f" + nombre.slice(1));
-
-        if (valor === respuestas[nombre].correcta) {
-            puntaje++;
-            feedback.className = "feedback correct";
-            feedback.innerHTML = "Correcto: " + respuestas[nombre].explicacion;
-        } else {
-            feedback.className = "feedback incorrect";
-            feedback.innerHTML = "Incorrecto: " + respuestas[nombre].explicacion;
-        }
-
-        feedback.style.display = "block";
-
-        let progreso = (preguntaActual / totalPreguntas) * 100;
-        document.getElementById("progress").style.width = progreso + "%";
-
 
 function siguientePregunta() {
     let actual = document.getElementById("q" + preguntaActual);
@@ -572,16 +543,14 @@ function siguientePregunta() {
 function mostrarResultado() {
     let nombre = localStorage.getItem("nombre");
 
-    // Guardar resultado
     guardarResultado(nombre, puntaje);
 
     document.getElementById("quizForm").style.display = "none";
 
     let html = `
         <h2>Resultado: ${puntaje}/10</h2>
-        <button onclick="mostrarRanking()">Ver Ranking</button>
 
-        <h3> Tu tiempo por pregunta</h3>
+        <h3>⏱️ Tu tiempo por pregunta</h3>
         <ul>
     `;
 
@@ -590,11 +559,12 @@ function mostrarResultado() {
     });
 
     html += "</ul>";
-
-    
     html += generarAnalisisTiempos();
 
     document.getElementById("result").innerHTML = html;
+
+    
+    mostrarRanking();
 }
 
 function iniciarQuiz() {
