@@ -229,6 +229,16 @@ tr:nth-child(3) {
     font-weight: bold;
     color: #facc15;
 }
+#stats {
+    margin-top: 20px;
+    padding: 15px;
+    background: #1e293b;
+    border-radius: 10px;
+}
+
+#stats h3 {
+    color: #38bdf8;
+}
 </style>
 </head>
 
@@ -534,6 +544,7 @@ function mostrarResultado() {
     calcularStats(); 
     analizarTiempos();
     detectarProblemas();
+    mostrarTiemposUsuario();
 }
 
 function iniciarQuiz() {
@@ -620,6 +631,7 @@ function calcularStats() {
 }
 
 function analizarTiempos() {
+    
     let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
 
     if (resultados.length === 0) return;
@@ -673,6 +685,18 @@ function detectarProblemas() {
         <h3>⚠️ Área de mejora</h3>
         <p>La pregunta más difícil es la #${preguntaDificil}</p>
     `;
+}
+
+function mostrarTiemposUsuario() {
+    let html = "<h3>⏱️ Tu tiempo por pregunta</h3><ul>";
+
+    tiempos.forEach((t, i) => {
+        html += `<li>Pregunta ${i + 1}: ${t.toFixed(2)} segundos</li>`;
+    });
+
+    html += "</ul>";
+
+    document.getElementById("result").innerHTML += html;
 }
 </script>
 
