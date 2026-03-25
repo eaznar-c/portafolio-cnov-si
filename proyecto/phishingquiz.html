@@ -115,6 +115,40 @@ tr:nth-child(2) {
 tr:nth-child(3) {
     background: #cd7f32;
 }
+
+.inicio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.inicio-card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.inicio-card h2 {
+    margin-bottom: 20px;
+    color: #38bdf8;
+}
+
+.inicio-card input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.inicio-card button {
+    width: 100%;
+}
 </style>
 </head>
 
@@ -122,8 +156,13 @@ tr:nth-child(3) {
 
 <h1>Detectas Phishing Sofisticado?</h1>
 
-<input type="text" id="nombre" placeholder="Ingresa tu nombre" required>
-<button onclick="iniciarQuiz()">Comenzar</button>
+<div class="inicio-container">
+    <div class="inicio-card">
+        <h2>Iniciar Quiz</h2>
+        <input type="text" id="nombre" placeholder="Ingresa tu nombre" required>
+        <button onclick="iniciarQuiz()">Comenzar</button>
+    </div>
+</div>
 
 
 
@@ -419,10 +458,8 @@ function iniciarQuiz() {
 
     localStorage.setItem("nombre", nombre);
 
+    document.querySelector(".inicio-container").style.display = "none";
     document.getElementById("quizForm").style.display = "block";
-
-    
-    document.getElementById("nombre").style.display = "none";
 }
 function guardarResultado(nombre, puntaje) {
     let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
@@ -474,6 +511,8 @@ function calcularStats() {
         <p>Intentos: ${resultados.length}</p>
     `;
 }
+
+
 </script>
 
 </body>
