@@ -460,7 +460,7 @@ curl http://install-tool-free.xyz | bash</p>
 
 <div id="ranking"></div>
 
-<div id="stats"></div>
+
 
 
 
@@ -572,22 +572,29 @@ function siguientePregunta() {
 function mostrarResultado() {
     let nombre = localStorage.getItem("nombre");
 
-    // ✅ Guardar correctamente en localStorage
+    // Guardar resultado
     guardarResultado(nombre, puntaje);
 
     document.getElementById("quizForm").style.display = "none";
 
-    document.getElementById("result").innerHTML = `
+    let html = `
         <h2>Resultado: ${puntaje}/10</h2>
         <button onclick="mostrarRanking()">Ver Ranking</button>
+
+        <h3> Tu tiempo por pregunta</h3>
+        <ul>
     `;
 
-    document.getElementById("result").style.display = "block";
+    tiempos.forEach((t, i) => {
+        html += `<li>Pregunta ${i + 1}: ${t.toFixed(2)} segundos</li>`;
+    });
 
-    calcularStats(); 
-    analizarTiempos();
-    detectarProblemas();
-    mostrarTiemposUsuario();
+    html += "</ul>";
+
+    
+    html += generarAnalisisTiempos();
+
+    document.getElementById("result").innerHTML = html;
 }
 
 function iniciarQuiz() {
@@ -657,81 +664,11 @@ function mostrarRanking() {
 
     document.getElementById("ranking").innerHTML = html;
 }
-function calcularStats() {
-    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
 
-    if (resultados.length === 0) return;
 
-    let suma = resultados.reduce((acc, r) => acc + r.puntaje, 0);
-    let promedio = suma / resultados.length;
-    let max = Math.max(...resultados.map(r => r.puntaje));
-
-    document.getElementById("stats").innerHTML = `
-        <p>Promedio: ${promedio.toFixed(2)}</p>
-        <p>Máximo: ${max}</p>
-        <p>Intentos: ${resultados.length}</p>
-    `;
-}
-
-function analizarTiempos() {
-    
-    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
-
-    if (resultados.length === 0) return;
-
-    let totalPreguntas = 10;
-    let sumaTiempos = Array(totalPreguntas).fill(0);
-
-    resultados.forEach(user => {
-        user.tiempos.forEach((t, i) => {
-            sumaTiempos[i] += t;
-        });
-    });
-
-    let promedios = sumaTiempos.map(t => t / resultados.length);
-
-    let html = "<h3>📊 Análisis de dificultad</h3>";
-
-    promedios.forEach((t, i) => {
-        html += `<p>Pregunta ${i + 1}: ${t.toFixed(2)} seg</p>`;
-    });
-
-    document.getElementById("stats").innerHTML += html;
-}
-
-function detectarProblemas() {
-    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
-
-    let totalPreguntas = 10;
-    let errores = Array(totalPreguntas).fill(0);
-
-    resultados.forEach(user => {
-        // puedes expandir esto si guardas respuestas también
-    });
-
-    // Ejemplo simple basado en tiempo alto
-    let tiemposAltos = resultados.map(r => r.tiempos);
-
-    let promedioTiempo = [];
-
-    for (let i = 0; i < totalPreguntas; i++) {
-        let suma = 0;
-        resultados.forEach(r => suma += r.tiempos[i]);
-        promedioTiempo[i] = suma / resultados.length;
-    }
-
-    let maxTiempo = Math.max(...promedioTiempo);
-
-    let preguntaDificil = promedioTiempo.indexOf(maxTiempo) + 1;
-
-    document.getElementById("stats").innerHTML += `
-        <h3>⚠️ Área de mejora</h3>
-        <p>La pregunta más difícil es la #${preguntaDificil}</p>
-    `;
-}
 
 function mostrarTiemposUsuario() {
-    let html = "<h3>⏱️ Tu tiempo por pregunta</h3><ul>";
+    let html = "<h3> Tu tiempo por pregunta</h3><ul>";
 
     tiempos.forEach((t, i) => {
         html += `<li>Pregunta ${i + 1}: ${t.toFixed(2)} segundos</li>`;
@@ -761,29 +698,64 @@ function revisarRespuesta() {
     tiempos.push(tiempoPregunta);
     tiempoInicio = Date.now();
 
-    // ✔️ validar respuesta
+    // validar respuesta
     if (valor === respuestas[nombre].correcta) {
         puntaje++;
         feedback.className = "feedback correct";
-        feedback.innerHTML = "✅ Correcto: " + respuestas[nombre].explicacion;
+        feedback.innerHTML = "Correcto: " + respuestas[nombre].explicacion;
     } else {
         feedback.className = "feedback incorrect";
-        feedback.innerHTML = "❌ Incorrecto: " + respuestas[nombre].explicacion;
+        feedback.innerHTML = "Incorrecto: " + respuestas[nombre].explicacion;
     }
 
     feedback.style.display = "block";
 
-    // 🔒 bloquear opciones
+    //
     document.querySelectorAll(`input[name="q${preguntaActual}"]`)
         .forEach(input => input.disabled = true);
 
-    // 🎮 cambiar botones
     document.getElementById("btnRevisar").style.display = "none";
     document.getElementById("btnSiguiente").style.display = "inline-block";
 
-    // 📊 progreso
+    // 
     let progreso = (preguntaActual / totalPreguntas) * 100;
     document.getElementById("progress").style.width = progreso + "%";
+}
+
+function generarAnalisisTiempos() {
+    let resultados = JSON.parse(localStorage.getItem("ranking")) || [];
+
+    if (resultados.length === 0) return "";
+
+    let totalPreguntas = 10;
+    let sumaTiempos = Array(totalPreguntas).fill(0);
+
+    resultados.forEach(user => {
+        user.tiempos.forEach((t, i) => {
+            sumaTiempos[i] += t;
+        });
+    });
+
+    let promedios = sumaTiempos.map(t => t / resultados.length);
+
+    let html = "<h3>Promedio global</h3><ul>";
+
+    promedios.forEach((t, i) => {
+        html += `<li>Pregunta ${i + 1}: ${t.toFixed(2)} seg</li>`;
+    });
+
+    html += "</ul>";
+
+    // detectar más difícil
+    let max = Math.max(...promedios);
+    let index = promedios.indexOf(max) + 1;
+
+    html += `
+        <h3>Área de mejora</h3>
+        <p>La pregunta más difícil es la #${index}</p>
+    `;
+
+    return html;
 }
 </script>
 
